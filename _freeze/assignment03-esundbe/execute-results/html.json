@@ -1,0 +1,12 @@
+{
+  "hash": "be999ea07e014ab84020eaa84a27756e",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: Assignment 03\nauthor:\n  - name: Emily Sundberg\n    affiliations:\n      - id: bu\n        name: Boston University\n        city: Boston\n        state: MA\nnumber-sections: true\ndate: '2025-09-24'\nformat:\n  html:\n    theme: cerulean\n    toc: true\n    toc-depth: 2\ndate-modified: today\ndate-format: long\nexecute:\n  echo: false\n  eval: false\n  freeze: auto\n---\n\n\n\n\n\n",
+    "supporting": [
+      "assignment03-esundbe_files/figure-html"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

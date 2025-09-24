@@ -16,10 +16,7 @@ format:
     toc-depth: 2
 date-modified: today
 date-format: long
-execute:
-  echo: false
-  eval: false
-  freeze: auto
+
 ---
 
 
