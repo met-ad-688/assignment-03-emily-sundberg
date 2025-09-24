@@ -1,0 +1,5 @@
+project:
+  type: default
+
+execute:
+  python: /home/ubuntu/.venv/bin/python3
