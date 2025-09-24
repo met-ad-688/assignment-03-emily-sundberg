@@ -8,4 +8,4 @@ project:
   type: notebook
 
 execute:
-  python: .venv/bin/python
+  python: /home/ubuntu/.venv/bin/python
