@@ -3,3 +3,9 @@ project:
 
 execute:
   python: /home/ubuntu/.venv/bin/python
+
+project:
+  type: notebook
+
+execute:
+  python: .venv/bin/python
