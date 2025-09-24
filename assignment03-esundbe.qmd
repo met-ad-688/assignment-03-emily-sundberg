@@ -37,6 +37,12 @@ pio.renderers.default = "notebook"
 
 spark = SparkSession.builder.appName("LightcastData").getOrCreate()
 
+df = spark.read.option("header", "true").option("inferSchema", "true").option("multiLine","true").option("escape", "\"").csv("../data/lightcast_job_postings.csv")
+df.createOrReplaceTempView("job_postings")
 
+print("---This is Diagnostic check, No need to print it in the final doc---")
+
+df.printSchema() # comment this line when rendering the submission
+df.show(5)
 
 ```
