@@ -1,14 +1,14 @@
 ---
 title: Assignment 03
 author:
-  - name: Norah Jones
+  - name: Emily Sundberg
     affiliations:
       - id: bu
         name: Boston University
         city: Boston
         state: MA
 number-sections: true
-date: '2024-11-21'
+date: '2025-09-24'
 format:
   html:
     theme: cerulean
