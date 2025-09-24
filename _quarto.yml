@@ -2,4 +2,4 @@ project:
   type: default
 
 execute:
-  python: /home/ubuntu/.venv/bin/python3
+  python: /home/ubuntu/.venv/bin/python
