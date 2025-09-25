@@ -92,3 +92,12 @@ df = df.fillna({
 df = df.withColumn("EDUCATION_LEVELS_NAME", regexp_replace(col("EDUCATION_LEVELS_NAME"), "[\n\r]", ""))
 
 ```
+
+## Compute Average Salary
+
+```{python}
+df = df.withColumn("AVG_SALARY", (col("SALARY_FROM")+col("SALARY_TO"))/2)
+```
+
+
+## Exporting Cleaned Data
