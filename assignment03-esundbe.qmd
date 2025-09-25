@@ -117,7 +117,22 @@ df_selected = df.select(
 ```{python}
 pdf = df_selected.toPandas()
 
-pdf.to_csv("/home/ubuntu/assignment03-emily-sundberg-1/data/lightcast_cleaned.csv", index=False)
+pdf.to_csv("./data/lightcast_cleaned.csv", index=False)
 
 print("Data Cleaning Complete. Rows retained:", len(pdf))
 ```
+
+# Salary Distribution by Industry and Employment Type
+
+## Remove records where salary is missing or zero
+
+```{python}
+pdf = df.filter(df["SALARY"] >0).select("EMPLOYMENT_TYPE_NAME", "SALARY").toPandas()
+
+#pdf["EMPLOYMENT_TYPE_NAME"] = pdf["EMPLOYMENT_TYPE_NAME"].apply(lambda x: re.sub(r"[^\x00-\x7F]+","",x))
+```
+
+## Clean 
+
+
+
