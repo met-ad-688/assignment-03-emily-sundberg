@@ -76,7 +76,7 @@ median_sal = compute_median(df,"SALARY")
 print("Medians:", median_from, median_to, median_sal)
 
 ```
-## Input missing salaries
+## Impute missing salaries
 
 ```{python}
 df = df.fillna({
@@ -84,4 +84,11 @@ df = df.fillna({
   "SALARY_TO": median_to,
   "SALARY": median_sal
 })
+```
+
+## Cleaning Education Column
+
+```{python}
+df = df.withColumn("EDUCATION_LEVELS_NAME", regexp_replace(col("EDUCATION_LEVELS_NAME"), "[\n\r]", ""))
+
 ```
