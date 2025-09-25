@@ -196,7 +196,17 @@ salary_pd = salary_analysis.toPandas()
 ## Bubble Plot
 
 ```{python}
+fig = px.scatter(
+  salary_pd,
+  x="ONET_NAME",
+  y="Median_Salary",
+  size="Job_Postings",
+  title ="Salary Analysis by ONET Occupation Type (Bubble Chart)"
+)
 
+fig.show()
 ```
+
+This tells us that data analysts have a significant amount of job postings in the less than $100K range. 
 
 
