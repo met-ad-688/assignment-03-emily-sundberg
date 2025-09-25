@@ -193,4 +193,10 @@ salary_pd = salary_analysis.toPandas()
 
 ```
 
+## Bubble Plot
+
+```{python}
+
+```
+
 
