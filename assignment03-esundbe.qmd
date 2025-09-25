@@ -111,3 +111,13 @@ df_selected = df.select(
   "LOT_V6_SPECIALIZED_OCCUPATION_NAME")
 
 ```
+
+## Save to CSV
+
+```{python}
+pdf = df_selected.toPandas()
+
+pdf.to_csv("/home/ubuntu/assignment03-emily-sundberg-1/data/lightcast_cleaned.csv", index=False)
+
+print("Data Cleaning Complete. Rows retained:", len(pdf))
+```
