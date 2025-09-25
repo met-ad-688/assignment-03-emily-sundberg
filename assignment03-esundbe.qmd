@@ -101,3 +101,13 @@ df = df.withColumn("AVG_SALARY", (col("SALARY_FROM")+col("SALARY_TO"))/2)
 
 
 ## Exporting Cleaned Data
+
+```{python}
+df_selected = df.select(
+  "EDUCATION_LEVELS_NAME",
+  "REMOTE_TYPE_NAME",
+  "MAX_YEARS_EXPERIENCE",
+  "AVG_SALARY",
+  "LOT_V6_SPECIALIZED_OCCUPATION_NAME")
+
+```
