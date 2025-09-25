@@ -171,4 +171,26 @@ fig.show()
 
 ```
 
+The plot above shows us that the medians of these industries average around 100K but there are several career fields with the opportunity to make significantly more. Both admin support and information have outliers in the $500K range. 
+
+# Salary Analysis by ONET Occupation Type
+
+## Aggregate Data
+
+```{python}
+salary_analysis = spark.sql("""
+  SELECT
+    TITLE_NAME AS ONET_NAME,
+    PERCENTILE(SALARY, 0.5) AS Median_Salary,
+    Count(*) AS Job_Postings
+  FROM job_postings
+  GROUP BY TITLE_NAME
+  ORDER BY Job_Postings DESC
+  LIMIT 10
+""")
+
+salary_pd = salary_analysis.toPandas()
+
+```
+
 
