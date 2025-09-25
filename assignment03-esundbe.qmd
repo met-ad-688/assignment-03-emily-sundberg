@@ -71,7 +71,17 @@ def compute_median(sdf, col_name):
 
 median_from = compute_median(df, "SALARY_FROM")
 median_to = compute_median(df, "SALARY_TO")
+median_sal = compute_median(df,"SALARY")
 
-print("Medians:", median_from, median_to)
+print("Medians:", median_from, median_to, median_sal)
 
+```
+## Input missing salaries
+
+```{python}
+df = df.fillna({
+  "SALARY_FROM": median_from,
+  "SALARY_TO": median_to,
+  "SALARY": median_sal
+})
 ```
