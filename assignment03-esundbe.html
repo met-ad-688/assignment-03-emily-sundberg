@@ -84,6 +84,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul class="collapse">
   <li><a href="#load-the-data-set" id="toc-load-the-data-set" class="nav-link active" data-scroll-target="#load-the-data-set"><span class="header-section-number">1</span> Load the Data Set</a></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning"><span class="header-section-number">2</span> Data Cleaning</a>
+  <ul class="collapse">
+  <li><a href="#casting-salary-and-experience-columns" id="toc-casting-salary-and-experience-columns" class="nav-link" data-scroll-target="#casting-salary-and-experience-columns"><span class="header-section-number">2.1</span> Casting salary and experience columns</a></li>
+  <li><a href="#computing-medians-for-salary-columns" id="toc-computing-medians-for-salary-columns" class="nav-link" data-scroll-target="#computing-medians-for-salary-columns"><span class="header-section-number">2.2</span> Computing medians for salary columns</a></li>
+  <li><a href="#impute-missing-salaries" id="toc-impute-missing-salaries" class="nav-link" data-scroll-target="#impute-missing-salaries"><span class="header-section-number">2.3</span> Impute missing salaries</a></li>
+  <li><a href="#cleaning-education-column" id="toc-cleaning-education-column" class="nav-link" data-scroll-target="#cleaning-education-column"><span class="header-section-number">2.4</span> Cleaning Education Column</a></li>
+  <li><a href="#compute-average-salary" id="toc-compute-average-salary" class="nav-link" data-scroll-target="#compute-average-salary"><span class="header-section-number">2.5</span> Compute Average Salary</a></li>
+  <li><a href="#exporting-cleaned-data" id="toc-exporting-cleaned-data" class="nav-link" data-scroll-target="#exporting-cleaned-data"><span class="header-section-number">2.6</span> Exporting Cleaned Data</a></li>
+  <li><a href="#save-to-csv" id="toc-save-to-csv" class="nav-link" data-scroll-target="#save-to-csv"><span class="header-section-number">2.7</span> Save to CSV</a></li>
+  </ul></li>
+  <li><a href="#salary-distribution-by-industry-and-employment-type" id="toc-salary-distribution-by-industry-and-employment-type" class="nav-link" data-scroll-target="#salary-distribution-by-industry-and-employment-type"><span class="header-section-number">3</span> Salary Distribution by Industry and Employment Type</a>
+  <ul class="collapse">
+  <li><a href="#remove-records-where-salary-is-missing-or-zero" id="toc-remove-records-where-salary-is-missing-or-zero" class="nav-link" data-scroll-target="#remove-records-where-salary-is-missing-or-zero"><span class="header-section-number">3.1</span> Remove records where salary is missing or zero</a></li>
+  <li><a href="#aggregate-data" id="toc-aggregate-data" class="nav-link" data-scroll-target="#aggregate-data"><span class="header-section-number">3.2</span> Aggregate Data</a></li>
+  <li><a href="#visualize-results" id="toc-visualize-results" class="nav-link" data-scroll-target="#visualize-results"><span class="header-section-number">3.3</span> Visualize Results</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -135,7 +151,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="load-the-data-set" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Load the Data Set</h1>
-<div id="937cbca4" class="cell" data-execution_count="1">
+<div id="2abb7679" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.io <span class="im">as</span> pio</span>
@@ -163,9 +179,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stderr">
 <pre><code>Setting default log level to "WARN".
 To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-25/09/25 02:08:10 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-25/09/25 02:08:11 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
-[Stage 1:&gt;                                                          (0 + 1) / 1]                                                                                25/09/25 02:08:23 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+25/09/25 02:54:10 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/09/25 02:54:11 WARN Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+[Stage 1:&gt;                                                          (0 + 1) / 1]                                                                                25/09/25 02:54:23 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
 [Stage 2:&gt;                                                          (0 + 1) / 1]                                                                                </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -182,6 +198,134 @@ only showing top 5 rows
 </code></pre>
 </div>
 </div>
+</section>
+<section id="data-cleaning" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Data Cleaning</h1>
+<section id="casting-salary-and-experience-columns" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="casting-salary-and-experience-columns"><span class="header-section-number">2.1</span> Casting salary and experience columns</h2>
+<div id="05a5a8bd" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.withColumn(<span class="st">"SALARY_FROM"</span>, col (<span class="st">"SALARY_FROM"</span>).cast(<span class="st">"float"</span>))<span class="op">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  .withColumn(<span class="st">"SALARY_TO"</span>, col(<span class="st">"SALARY_TO"</span>).cast(<span class="st">"float"</span>)) <span class="op">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  .withColumn(<span class="st">"MAX_YEARS_EXPERIENCE"</span>, col(<span class="st">"MAX_YEARS_EXPERIENCE"</span>).cast(<span class="st">"float"</span>))<span class="op">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  .withColumn(<span class="st">"MIN_YEARS_EXPERIENCE"</span>, col(<span class="st">"MIN_YEARS_EXPERIENCE"</span>).cast(<span class="st">"float"</span>))<span class="op">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  .withColumn(<span class="st">"SALARY"</span>, col(<span class="st">"SALARY"</span>).cast(<span class="st">"float"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="computing-medians-for-salary-columns" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="computing-medians-for-salary-columns"><span class="header-section-number">2.2</span> Computing medians for salary columns</h2>
+<div id="8ea89805" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_median(sdf, col_name):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  q <span class="op">=</span> sdf.approxQuantile(col_name, [<span class="fl">0.5</span>], <span class="fl">0.01</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> q[<span class="dv">0</span>] <span class="cf">if</span> q <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>median_from <span class="op">=</span> compute_median(df, <span class="st">"SALARY_FROM"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>median_to <span class="op">=</span> compute_median(df, <span class="st">"SALARY_TO"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>median_sal <span class="op">=</span> compute_median(df,<span class="st">"SALARY"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Medians:"</span>, median_from, median_to, median_sal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[Stage 3:&gt;                                                          (0 + 1) / 1]                                                                                [Stage 4:&gt;                                                          (0 + 1) / 1]                                                                                [Stage 5:&gt;                                                          (0 + 1) / 1]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Medians: 87295.0 130042.0 115024.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>                                                                                </code></pre>
+</div>
+</div>
+</section>
+<section id="impute-missing-salaries" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="impute-missing-salaries"><span class="header-section-number">2.3</span> Impute missing salaries</h2>
+<div id="78a93ca7" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.fillna({</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SALARY_FROM"</span>: median_from,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SALARY_TO"</span>: median_to,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SALARY"</span>: median_sal</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="cleaning-education-column" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="cleaning-education-column"><span class="header-section-number">2.4</span> Cleaning Education Column</h2>
+<div id="9e7a245c" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.withColumn(<span class="st">"EDUCATION_LEVELS_NAME"</span>, regexp_replace(col(<span class="st">"EDUCATION_LEVELS_NAME"</span>), <span class="st">"[</span><span class="ch">\n\r</span><span class="st">]"</span>, <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="compute-average-salary" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="compute-average-salary"><span class="header-section-number">2.5</span> Compute Average Salary</h2>
+<div id="848903cf" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.withColumn(<span class="st">"AVG_SALARY"</span>, (col(<span class="st">"SALARY_FROM"</span>)<span class="op">+</span>col(<span class="st">"SALARY_TO"</span>))<span class="op">/</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exporting-cleaned-data" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="exporting-cleaned-data"><span class="header-section-number">2.6</span> Exporting Cleaned Data</h2>
+<div id="ba92dc0b" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_selected <span class="op">=</span> df.select(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EDUCATION_LEVELS_NAME"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"REMOTE_TYPE_NAME"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"MAX_YEARS_EXPERIENCE"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"AVG_SALARY"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"LOT_V6_SPECIALIZED_OCCUPATION_NAME"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="save-to-csv" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="save-to-csv"><span class="header-section-number">2.7</span> Save to CSV</h2>
+<div id="f7991613" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="op">=</span> df_selected.toPandas()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>pdf.to_csv(<span class="st">"./data/lightcast_cleaned.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Data Cleaning Complete. Rows retained:"</span>, <span class="bu">len</span>(pdf))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[Stage 6:&gt;                                                          (0 + 1) / 1]                                                                                </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Data Cleaning Complete. Rows retained: 72498</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="salary-distribution-by-industry-and-employment-type" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Salary Distribution by Industry and Employment Type</h1>
+<section id="remove-records-where-salary-is-missing-or-zero" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="remove-records-where-salary-is-missing-or-zero"><span class="header-section-number">3.1</span> Remove records where salary is missing or zero</h2>
+<div id="497aee51" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pdf <span class="op">=</span> df.<span class="bu">filter</span>(df[<span class="st">"SALARY"</span>] <span class="op">&gt;</span><span class="dv">0</span>).select(<span class="st">"EMPLOYMENT_TYPE_NAME"</span>, <span class="st">"SALARY"</span>).toPandas()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#pdf["EMPLOYMENT_TYPE_NAME"] = pdf["EMPLOYMENT_TYPE_NAME"].apply(lambda x: re.sub(r"[^\x00-\x7F]+","",x))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[Stage 7:&gt;                                                          (0 + 1) / 1]                                                                                </code></pre>
+</div>
+</div>
+</section>
+<section id="aggregate-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="aggregate-data"><span class="header-section-number">3.2</span> Aggregate Data</h2>
+<div id="bba44df7" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>median_salaries <span class="op">=</span> pdf.groupby(<span class="st">"EMPLOYMENT_TYPE_NAME"</span>)[<span class="st">"SALARY"</span>].median()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>sorted_employment_types <span class="op">=</span> median_salaries.sort_values(ascending <span class="op">=</span> <span class="va">False</span>).index</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>pdf[<span class="st">"EMPLOYMENT_TYPE_NAME"</span>] <span class="op">=</span> pd.Categorical(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  pdf[<span class="st">"EMPLOYMENT_TYPE_NAME"</span>],</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  categories<span class="op">=</span>sorted_employment_types,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  ordered<span class="op">=</span><span class="va">True</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="visualize-results" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="visualize-results"><span class="header-section-number">3.3</span> Visualize Results</h2>
+<div id="2e867e7c" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.box(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  pdf,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> <span class="st">"EMPLOYMENT_TYPE_NAME"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> <span class="st">"SALARY"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  title <span class="op">=</span> <span class="st">"Salary Distribution by Employment Type"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  color_discrete_sequence <span class="op">=</span> [<span class="st">"brown"</span>],</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  boxmode <span class="op">=</span> <span class="st">"group"</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  points <span class="op">=</span> <span class="st">"all"</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 </section>
 
 </main>

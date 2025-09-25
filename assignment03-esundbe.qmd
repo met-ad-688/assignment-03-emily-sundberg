@@ -108,7 +108,8 @@ df_selected = df.select(
   "REMOTE_TYPE_NAME",
   "MAX_YEARS_EXPERIENCE",
   "AVG_SALARY",
-  "LOT_V6_SPECIALIZED_OCCUPATION_NAME")
+  "LOT_V6_SPECIALIZED_OCCUPATION_NAME",
+  "NAICS2_NAME")
 
 ```
 
@@ -127,7 +128,7 @@ print("Data Cleaning Complete. Rows retained:", len(pdf))
 ## Remove records where salary is missing or zero
 
 ```{python}
-pdf = df.filter(df["SALARY"] >0).select("EMPLOYMENT_TYPE_NAME", "SALARY").toPandas()
+pdf = df.filter(df["SALARY"] >0).select("EMPLOYMENT_TYPE_NAME", "SALARY","NAICS2_NAME").toPandas()
 
 #pdf["EMPLOYMENT_TYPE_NAME"] = pdf["EMPLOYMENT_TYPE_NAME"].apply(lambda x: re.sub(r"[^\x00-\x7F]+","",x))
 ```
@@ -147,6 +148,27 @@ pdf["EMPLOYMENT_TYPE_NAME"] = pd.Categorical(
 )
 
 ```
+## Visualize Results
 
+```{python}
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+fig = px.box(
+  pdf,
+  x = "NAICS2_NAME",
+  y = "SALARY",
+  color = "EMPLOYMENT_TYPE_NAME",
+  title = "Salary Distribution by Employment Type",
+  #color_discrete_sequence = ["orange"],
+  boxmode = "group",
+  points = "all" 
+)
+
+fig.show()
+
+```
 
 
