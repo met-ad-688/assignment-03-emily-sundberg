@@ -18,6 +18,7 @@ date-modified: today
 date-format: long
 ---
 
+# Load the Data Set
 
 ```{python}
 import pandas as pd
@@ -37,12 +38,22 @@ pio.renderers.default = "notebook"
 
 spark = SparkSession.builder.appName("LightcastData").getOrCreate()
 
-df = spark.read.option("header", "true").option("inferSchema", "true").option("multiLine","true").option("escape", "\"").csv("../data/lightcast_job_postings.csv")
+df = spark.read.option("header", "true").option("inferSchema", "true").option("multiLine","true").option("escape", "\"").csv("/home/ubuntu/assignment-03-emily-sundberg-1/data/lightcast_job_postings.csv")
 df.createOrReplaceTempView("job_postings")
 
-print("---This is Diagnostic check, No need to print it in the final doc---")
+#print("---This is Diagnostic check, No need to print it in the final doc---")
 
-df.printSchema() # comment this line when rendering the submission
+#df.printSchema() # comment this line when rendering the submission
 df.show(5)
+
+```
+
+# Data Cleaning
+
+## Casting salary and experience columns
+```{python}
+df = df.withColumn("SALARY_FROM", col ("SALARY_FROM").cast("float"))\
+  .withColumn("SALARY_TO", col("SALARY_TO").cast("float")) \
+    .withColumn("MAX_YEARS_EXPERIENCE", col("MAX_YEARS_EXPERIENCE").cast("float"))
 
 ```
