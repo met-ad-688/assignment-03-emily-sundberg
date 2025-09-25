@@ -72,4 +72,6 @@ def compute_median(sdf, col_name):
 median_from = compute_median(df, "SALARY_FROM")
 median_to = compute_median(df, "SALARY_TO")
 
+print("Medians:", median_from, median_to)
+
 ```
