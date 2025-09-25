@@ -132,7 +132,21 @@ pdf = df.filter(df["SALARY"] >0).select("EMPLOYMENT_TYPE_NAME", "SALARY").toPand
 #pdf["EMPLOYMENT_TYPE_NAME"] = pdf["EMPLOYMENT_TYPE_NAME"].apply(lambda x: re.sub(r"[^\x00-\x7F]+","",x))
 ```
 
-## Clean 
+## Aggregate Data
+
+```{python}
+
+median_salaries = pdf.groupby("EMPLOYMENT_TYPE_NAME")["SALARY"].median()
+
+sorted_employment_types = median_salaries.sort_values(ascending = False).index
+
+pdf["EMPLOYMENT_TYPE_NAME"] = pd.Categorical(
+  pdf["EMPLOYMENT_TYPE_NAME"],
+  categories=sorted_employment_types,
+  ordered=True
+)
+
+```
 
 
 
