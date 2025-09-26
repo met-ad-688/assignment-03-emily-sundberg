@@ -181,10 +181,15 @@ fig = px.box(
 
 ## Format Visualization
 
+
+
+
+
 ```{python}
 fig.update_layout(
+  margin=dict(t=150),
   width=2000, 
-  height=600,
+  height=800,
   title=dict(
     text = "Salary Distribution By Employment Type",
     font=dict(size=30, family="Montserrat", color = "saddlebrown", weight="bold")
