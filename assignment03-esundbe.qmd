@@ -379,7 +379,7 @@ df_pd = df_filtered.toPandas()
 ## Scatter Plot
 
 ```{python}
-fig1 = px.scatter(
+fig = px.scatter(
   df_pd,
   x = "MAX_YEARS_EXPERIENCE",
   y = "AVG_SALARY",
@@ -390,9 +390,9 @@ fig1 = px.scatter(
   color_discrete_sequence= ["palevioletred", "mediumseagreen"]
 )
 
-fig1.update_traces(marker=dict(size=7, line=dict(width=1, color="black")))
+fig.update_traces(marker=dict(size=7, line=dict(width=1, color="black")))
 
-fig1.update_layout(
+fig.update_layout(
   plot_bgcolor = "papayawhip",
   font=dict(family = "Montserrat", size = 14),
   title_font = dict(size = 22, weight = "bold"),
@@ -409,7 +409,7 @@ fig1.update_layout(
   yaxis=dict(gridcolor = "peru")
 )
 
-fig1.show()
+fig.show()
 
 ```
 
@@ -420,7 +420,68 @@ This graph is showing that as years of experience increases, the floor for avera
 ## Split Work Type Groups
 
 ```{python}
-df = 
+from pyspark.sql.functions import when, col, trim
 
+df = df.withColumn("REMOTE_GROUP",
+  when(trim(col("REMOTE_TYPE_NAME"))== "Remote", "Remote")
+  .when(trim(col("REMOTE_TYPE_NAME"))== "Hybrid Remote", "Hybrid")
+  .when(trim(col("REMOTE_TYPE_NAME"))== "Not Remote", "Onsite")
+  .when(col("REMOTE_TYPE_NAME").isNull(), "Onsite")
+  .otherwise("Onsite")
+)
+
+df = df.filter(
+  col("MAX_YEARS_EXPERIENCE").isNotNull() &
+  col("AVG_SALARY").isNotNull() &
+  (col("MAX_YEARS_EXPERIENCE") > 0) &
+  (col("AVG_SALARY") > 0 )
+)
+
+df_pd = df.select("MAX_YEARS_EXPERIENCE", "AVG_SALARY", "LOT_V6_SPECIALIZED_OCCUPATION_NAME", "REMOTE_GROUP").toPandas()
 
 ```
+
+## Scatter Plot
+
+```{python}
+
+df_pd["MAX_EXPERIENCE_JITTER"] = df_pd["MAX_YEARS_EXPERIENCE"] + np.random.uniform(-0.3, 0.3, size = len(df_pd))
+df_pd["AVG_SALARY_JITTER"] = df_pd["AVG_SALARY"] + np.random.uniform(-1500, 1500, size = len(df_pd))
+
+fig = px.scatter(
+  df_pd,
+  width = 2000,
+  height = 800,
+  x = "MAX_EXPERIENCE_JITTER",
+  y = "AVG_SALARY_JITTER",
+  color = "REMOTE_GROUP",
+  hover_data=["LOT_V6_SPECIALIZED_OCCUPATION_NAME"],
+  title = "Experience vs Salary by Remote Work Type",
+  opacity = 0.7,
+  color_discrete_sequence=["palevioletred", "mediumseagreen","lightblue"]
+)
+
+fig.update_traces(marker=dict(size=7, line=dict(width=1, color="black")))
+
+fig.update_layout(
+  plot_bgcolor = "papayawhip",
+  font=dict(family = "Montserrat", size = 14),
+  title_font = dict(size = 22, weight = "bold"),
+  xaxis_title = "Years of Experience",
+  yaxis_title = "Average Salary (USD)",
+  legend_title = "Remote Work Type",
+  hoverlabel = dict(bgcolor = "white", font_size = 13, font_family = "Montserrat"),
+  margin=dict(t=70, l=60, r=60),
+  xaxis=dict(
+    gridcolor="peru",
+    tickmode = 'linear',
+    dtick=1
+  ),
+  yaxis=dict(gridcolor = "peru")
+)
+
+fig.show()
+
+```
+
+This graph shows us that there isn't a significant difference in average salary across the three different remote work types but those outliers with the highest paying job postings are almost entirely onsite. 
