@@ -485,3 +485,74 @@ fig.show()
 ```
 
 This graph shows us that there isn't a significant difference in average salary across the three different remote work types but those outliers with the highest paying job postings are almost entirely onsite. 
+
+## Histograms
+
+### Onsite
+
+```{python}
+fig = px.histogram(
+    df_pd[df_pd["REMOTE_GROUP"] == "Onsite"],
+    x="AVG_SALARY",
+    nbins=20,
+    title=f"Salary Distribution - Onsite",
+    color_discrete_sequence=["palevioletred"]
+)
+
+fig.update_layout(
+    plot_bgcolor="papayawhip",
+    xaxis_title="Average Salary (USD)",
+    yaxis_title="Count of Job Postings",
+    font=dict(family="Montserrat", size=14)
+)
+fig.show()
+
+```
+
+This histogram demonstrates that onsite job postings have an average salary of just over $100K with a few outliers ranging from roughly $300K - $800K. 
+
+### Remote
+
+```{python}
+fig = px.histogram(
+    df_pd[df_pd["REMOTE_GROUP"] == "Remote"],
+    x="AVG_SALARY",
+    nbins=20,
+    title=f"Salary Distribution - Remote",
+    color_discrete_sequence=["mediumseagreen"]
+)
+
+fig.update_layout(
+    plot_bgcolor="papayawhip",
+    xaxis_title="Average Salary (USD)",
+    yaxis_title="Count of Job Postings",
+    font=dict(family="Montserrat", size=14)
+)
+fig.show()
+
+```
+
+This histogram paints a similar picture as the onsite histogram with the average salary being just over $100K. The cap for remote positions however seems to be around $300K.
+
+### Hybrid
+
+```{python}
+fig = px.histogram(
+    df_pd[df_pd["REMOTE_GROUP"] == "Hybrid"],
+    x="AVG_SALARY",
+    nbins=20,
+    title=f"Salary Distribution - Hybrid",
+    color_discrete_sequence=["lightblue"]
+)
+
+fig.update_layout(
+    plot_bgcolor="papayawhip",
+    xaxis_title="Average Salary (USD)",
+    yaxis_title="Count of Job Postings",
+    font=dict(family="Montserrat", size=14)
+)
+fig.show()
+
+```
+
+The Hybrid histogram looks very similar to the remote histogram with less lucrative outliers but there is a large difference in the drastic decline in number of job postings after ~$125K. It appears that after that point (or so), the number of job postings dwindles rapidly. It's also worth noting that there are significantly less overall job postings for hybrid postions than fully remote or fully onsite. 
