@@ -365,29 +365,62 @@ df = df.withColumn(
 
 df = df.filter(
   col("MAX_YEARS_EXPERIENCE").isNotNull() &
-  col("Average_Salary").isNotNull() &
+  col("AVG_SALARY").isNotNull() &
   (col("MAX_YEARS_EXPERIENCE")>0) &
-  (col("Average_Salary") > 0)
+  (col("AVG_SALARY") > 0)
 )
 
-df_filtered = df.filter(col("EDUCATION_GROUP").isin("Bachelor's or Lower","Master's or PhD"))
+df_filtered = df.filter(col("EDUCATION_GROUP").isin("Bachelor's or lower","Master's or PhD"))
 
 df_pd = df_filtered.toPandas()
 
 ```
 
-## Scatter Plots
+## Scatter Plot
 
 ```{python}
+fig1 = px.scatter(
+  df_pd,
+  x = "MAX_YEARS_EXPERIENCE",
+  y = "AVG_SALARY",
+  color = "EDUCATION_GROUP",
+  hover_data=["LOT_V6_SPECIALIZED_OCCUPATION_NAME"],
+  title = "Experience vs Salary by Education Level",
+  opacity=0.7,
+  color_discrete_sequence= ["palevioletred", "mediumseagreen"]
+)
+
+fig1.update_traces(marker=dict(size=7, line=dict(width=1, color="black")))
+
+fig1.update_layout(
+  plot_bgcolor = "papayawhip",
+  font=dict(family = "Montserrat", size = 14),
+  title_font = dict(size = 22, weight = "bold"),
+  xaxis_title = "Years of Experience",
+  yaxis_title = "Average Salary (USD)",
+  legend_title = "Education Group",
+  hoverlabel = dict(bgcolor = "white", font_size = 13, font_family = "Montserrat"),
+  margin=dict(t=70, l=60, r=60),
+  xaxis=dict(
+    gridcolor="peru",
+    tickmode = 'linear',
+    dtick=1
+  ),
+  yaxis=dict(gridcolor = "peru")
+)
+
+fig1.show()
 
 ```
 
+This graph is showing that as years of experience increases, the floor for average salary also increases. Additionally, it shows that Bachelor's or lower appears to have significantly more outliers while Master's or PhD is more consistent.
+
+# Salary By Remote Work Type
+
+## Split Work Type Groups
 
 ```{python}
+df = 
 
-```
-
-
-```{python}
 
 ```
