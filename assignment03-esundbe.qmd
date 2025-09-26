@@ -132,8 +132,8 @@ print("Data Cleaning Complete. Rows retained:", len(pdf))
 
 ```{python}
 pdf = df.filter(df["SALARY"] >0).select("EMPLOYMENT_TYPE_NAME", "SALARY","NAICS2_NAME").toPandas()
-
-#pdf["EMPLOYMENT_TYPE_NAME"] = pdf["EMPLOYMENT_TYPE_NAME"].apply(lambda x: re.sub(r"[^\x00-\x7F]+","",x))
+pdf["EMPLOYMENT_TYPE_NAME"] = pdf["EMPLOYMENT_TYPE_NAME"].fillna("Unknown")
+pdf["EMPLOYMENT_TYPE_NAME"] = pdf["EMPLOYMENT_TYPE_NAME"].apply(lambda x: re.sub(r"[^\x00-\x7F]+","",x))
 ```
 
 ## Aggregate Data
@@ -151,6 +151,7 @@ pdf["EMPLOYMENT_TYPE_NAME"] = pd.Categorical(
 )
 
 ```
+
 ## Visualize Results
 
 ```{python}
