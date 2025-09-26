@@ -181,10 +181,6 @@ fig = px.box(
 
 ## Format Visualization
 
-
-
-
-
 ```{python}
 fig.update_layout(
   margin=dict(t=150),
