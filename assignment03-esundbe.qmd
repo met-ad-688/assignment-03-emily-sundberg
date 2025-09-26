@@ -288,16 +288,17 @@ fig.show()
 ```{python}
 salary_analysis = spark.sql("""
   SELECT
-    TITLE_NAME AS ONET_NAME,
+    LOT_OCCUPATION_NAME AS Occupation_Name,
     PERCENTILE(SALARY, 0.5) AS Median_Salary,
     Count(*) AS Job_Postings
   FROM job_postings
-  GROUP BY TITLE_NAME
+  GROUP BY LOT_OCCUPATION_NAME
   ORDER BY Job_Postings DESC
   LIMIT 10
 """)
 
 salary_pd = salary_analysis.toPandas()
+salary_pd.head()
 
 ```
 
