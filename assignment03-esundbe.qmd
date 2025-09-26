@@ -76,6 +76,7 @@ median_salary = compute_median(df,"SALARY")
 print("Medians:", median_from, median_to, median_salary)
 
 ```
+
 ## Impute missing salaries
 
 ```{python}
@@ -174,7 +175,7 @@ fig = px.box(
   points = "outliers" 
 )
 
-fig.show()
+
 
 ```
 
@@ -183,13 +184,15 @@ fig.show()
 ```{python}
 fig.update_layout(
   title=dict(
+    width=2000, 
+    height=600,
     text = "Salary Distribution By Employment Type",
-    font=dict(size=30, family="Garamond", color = "saddlebrown", weight="bold")
-  )
+    font=dict(size=30, family="Montserrat", color = "saddlebrown", weight="bold")
+  ),
 
   xaxis=dict(
-    title=dict(text="NAICS2 Name", font=dict(size=14, family="garamond", color="saddlebrown", weight="bold")),
-    tickangle=45,
+    title=dict(text="NAICS2 Name", font=dict(size=14, family="Montserrat", color="saddlebrown", weight="bold")),
+    tickangle=50,
     showline=True,
     linewidth=2,
     linecolor="saddlebrown",
@@ -197,20 +200,20 @@ fig.update_layout(
     showgrid=False,
     categoryorder="array",
     categoryarray=sorted_employment_types.tolist()
-  )
+  ),
 
   yaxis=dict(
-    title=dict(text="Salary (K $)", font=dict(size=14, family="garamond", color="saddlebrown", weight="bold")),
+    title=dict(text="Salary (K $)", font=dict(size=14, family="Montserrat", color="saddlebrown", weight="bold")),
     tickvals=[0,50000,100000,150000,200000,250000,300000,350000,400000,450000,500000],
     ticktext=["0","50K","100K","150K","200K","250K","300K","350K","400K","450K","500K"],
-    tickfont=dict(size=12, family="garamond", color="saddlebrown",weight="bold"),
+    tickfont=dict(size=12, family="Montserrat", color="saddlebrown",weight="bold"),
     showline=True,
     linewidth=2,
     linecolor="saddlebrown",
     mirror=True,
     showgrid=True,
     gridcolor="tan",
-    gridwith=0.5
+    gridwidth=0.5
   )
 )
 
