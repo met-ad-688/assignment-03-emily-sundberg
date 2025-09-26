@@ -183,9 +183,9 @@ fig = px.box(
 
 ```{python}
 fig.update_layout(
+  width=2000, 
+  height=600,
   title=dict(
-    width=2000, 
-    height=600,
     text = "Salary Distribution By Employment Type",
     font=dict(size=30, family="Montserrat", color = "saddlebrown", weight="bold")
   ),
