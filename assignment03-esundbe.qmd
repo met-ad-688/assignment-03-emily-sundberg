@@ -317,7 +317,7 @@ fig = px.scatter(
   hover_name = "Occupation_Name",
   size_max=60,
   width=1000,
-  height=600,
+  height=1000,
   color="Job_Postings",
   color_continuous_scale="Sunsetdark"
 )
@@ -325,6 +325,7 @@ fig = px.scatter(
 
 ```{python}
 fig.update_layout(
+  margin=dict(t=150),
   font_family="Montserrat",
   font_size = 14,
   title_font_size = 25,
