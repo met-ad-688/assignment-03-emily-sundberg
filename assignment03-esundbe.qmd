@@ -178,8 +178,6 @@ fig = px.box(
 
 ```
 
-## Format Visualization
-
 ```{python}
 fig.update_layout(
   margin=dict(t=150),
@@ -307,15 +305,48 @@ salary_pd.head()
 ```{python}
 fig = px.scatter(
   salary_pd,
-  x="ONET_NAME",
+  x="Occupation_Name",
   y="Median_Salary",
   size="Job_Postings",
-  title ="Salary Analysis by ONET Occupation Type (Bubble Chart)"
+  title = "Salary Analysis by Occupation (Bubble Chart)",
+  labels={
+    "Occupation_Name": "Occupation",
+    "Median_Salary" : "Median Salary",
+    "Job_Postings" : "Number of Job Postings"
+  },
+  hover_name = "Occupation_Name",
+  size_max=60,
+  width=1000,
+  height=600,
+  color="Job_Postings",
+  color_continuous_scale="Sunsetdark"
+)
+```
+
+```{python}
+fig.update_layout(
+  font_family="Montserrat",
+  font_size = 14,
+  title_font_size = 25,
+  xaxis_title = "Occupation",
+  yaxis_title = "Median Salary",
+  plot_bgcolor = "white",
+  xaxis=dict(
+    tickangle=-45,
+    showline=True,
+    linecolor="black"
+  ),
+  yaxis=dict(
+    showline=True,
+    linecolor="black"
+  )
 )
 
 fig.show()
 ```
 
-This tells us that data analysts have a significant amount of job postings in the less than $100K range. 
+This figure shows us that, although data analysts and business analysts have roughly the same median salary, data analysts have far more job postings than their business analyst counterparts. 
+
+
 
 
