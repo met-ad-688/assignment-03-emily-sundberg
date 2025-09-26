@@ -347,6 +347,47 @@ fig.show()
 
 This figure shows us that, although data analysts and business analysts have roughly the same median salary, data analysts have far more job postings than their business analyst counterparts. 
 
+# Salary by Education Level
+
+## Create Education Groups
+
+```{python}
+lower_degree = ["Bachelor's", "Associate","GED", "No Education Listed", "High School"]
+
+higher_degree = ["Master's Degree", "PhD or professional degree"]
+
+df = df.withColumn(
+  "EDUCATION_GROUP",
+  when(col("EDUCATION_LEVELS_NAME").rlike("|".join([f"(?i){deg}"for deg in lower_degree])), "Bachelor's or lower")
+  .when(col("EDUCATION_LEVELS_NAME").rlike("|".join([f"(?i){deg}"for deg in higher_degree])), "Master's or PhD")
+  .otherwise("Other")
+)
+
+df = df.filter(
+  col("MAX_YEARS_EXPERIENCE").isNotNull() &
+  col("Average_Salary").isNotNull() &
+  (col("MAX_YEARS_EXPERIENCE")>0) &
+  (col("Average_Salary") > 0)
+)
+
+df_filtered = df.filter(col("EDUCATION_GROUP").isin("Bachelor's or Lower","Master's or PhD"))
+
+df_pd = df_filtered.toPandas()
+
+```
+
+## Scatter Plots
+
+```{python}
+
+```
 
 
+```{python}
 
+```
+
+
+```{python}
+
+```
