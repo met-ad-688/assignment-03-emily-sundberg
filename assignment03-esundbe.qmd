@@ -168,8 +168,7 @@ fig = px.box(
   pdf,
   x = "NAICS2_NAME",
   y = "SALARY",
-  #color = "EMPLOYMENT_TYPE_NAME",
-  title = "Salary Distribution by Employment Type",
+  title = "Salary Distribution by NAICS2 Name",
   color_discrete_sequence = ["peru"],
   boxmode = "group",
   points = "outliers" 
@@ -187,7 +186,7 @@ fig.update_layout(
   width=2000, 
   height=800,
   title=dict(
-    text = "Salary Distribution By Employment Type",
+    text = "Salary Distribution By NAICS2 Name",
     font=dict(size=30, family="Montserrat", color = "saddlebrown", weight="bold")
   ),
 
@@ -223,6 +222,64 @@ fig.show()
 
 
 The plot above shows us that the medians of these industries average around 100K but there are several career fields with the opportunity to make significantly more. Both admin support and information have outliers in the $500K range. 
+
+```{python}
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+
+fig = px.box(
+  pdf,
+  x = "EMPLOYMENT_TYPE_NAME",
+  y = "SALARY",
+  title = "Salary Distribution by Employment Type",
+  color_discrete_sequence = ["peru"],
+  boxmode = "group",
+  points = "outliers" 
+)
+```
+
+```{python}
+fig.update_layout(
+  margin=dict(t=150),
+  width=2000, 
+  height=800,
+  title=dict(
+    text = "Salary Distribution By Employment Type",
+    font=dict(size=30, family="Montserrat", color = "saddlebrown", weight="bold")
+  ),
+
+  xaxis=dict(
+    title=dict(text="Employment Type", font=dict(size=14, family="Montserrat", color="saddlebrown", weight="bold")),
+    tickangle=50,
+    showline=True,
+    linewidth=2,
+    linecolor="saddlebrown",
+    mirror=True,
+    showgrid=False,
+    categoryorder="array",
+    categoryarray=sorted_employment_types.tolist()
+  ),
+
+  yaxis=dict(
+    title=dict(text="Salary (K $)", font=dict(size=14, family="Montserrat", color="saddlebrown", weight="bold")),
+    tickvals=[0,50000,100000,150000,200000,250000,300000,350000,400000,450000,500000],
+    ticktext=["0","50K","100K","150K","200K","250K","300K","350K","400K","450K","500K"],
+    tickfont=dict(size=12, family="Montserrat", color="saddlebrown",weight="bold"),
+    showline=True,
+    linewidth=2,
+    linecolor="saddlebrown",
+    mirror=True,
+    showgrid=True,
+    gridcolor="tan",
+    gridwidth=0.5
+  )
+)
+
+fig.show()
+```
+
 
 # Salary Analysis by ONET Occupation Type
 
